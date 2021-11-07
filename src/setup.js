@@ -2,10 +2,9 @@ import dotenv from 'dotenv';
 
 let path;
 
-// remember to create your .env files
 switch (process.env.NODE_ENV) {
   case 'prod':
-    path = '.env';
+    path = '.env.prod';
     break;
   case 'test':
     path = '.env.test';

@@ -5,8 +5,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=dev nodemon src/server.js",
-    "test": "NODE_ENV=test npx jest"
+    "start": "NODE_ENV=prod node ./src/server.js",
+    "start:dev": "NODE_ENV=dev nodemon src/server.js",
+    "start:test": "NODE_ENV=test node src/server.js",
+    "test": "NODE_ENV=test npx jest",
+    "test:watch": "NODE_ENV=test npx jest --watch"
   },
   "repository": {
     "type": "git",
@@ -16,7 +19,7 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": ""
+    "url": "https://"
   },
   "homepage": "",
   "dependencies": {
@@ -29,6 +32,7 @@
     "express": "^4.17.1",
     "jest": "^27.3.1",
     "joi": "^17.4.2",
+    "ntl": "^5.1.0",
     "pg": "^8.7.1",
     "supertest": "^6.1.6",
     "uuid": "^8.3.2"
