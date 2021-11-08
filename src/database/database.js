@@ -1,4 +1,4 @@
-import './setup.js';
+import '../setup.js';
 import pg from 'pg';
 
 const { Pool } = pg;
