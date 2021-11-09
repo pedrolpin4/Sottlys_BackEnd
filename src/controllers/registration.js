@@ -1,5 +1,7 @@
+import { v4 as uuid } from 'uuid';
+import bcrypt from 'bcrypt';
 import connection from '../database/database.js';
-import signUpValidation from '../validations/joiValidations.js';
+import { signInValidation, signUpValidation } from '../validations/joiValidations.js';
 
 async function postSignUp(req, res) {
   const { body } = req;
@@ -11,25 +13,69 @@ async function postSignUp(req, res) {
     return;
   }
 
-  const users = await connection.query('SELECT * FROM users');
-  const isValidEmail = users.rows.some((user) => user.email === body.email);
-  const isValidCpf = users.rows.some((user) => user.cpf === body.cpf);
-
-  if (isValidEmail) {
-    res.status(409).send({
-      message: 'Looks like this email is already on our database',
-    });
-    return;
+  try {
+    const users = await connection.query('SELECT * FROM users');
+    const isValidEmail = users.rows.some((user) => user.email === body.email);
+    const isValidCpf = users.rows.some((user) => user.cpf === body.cpf);
+    if (isValidEmail) {
+      res.status(409).send({
+        message: 'Looks like this email is already on our database',
+      });
+      return;
+    }
+    if (isValidCpf) {
+      res.status(409).send({
+        message: 'Looks like this cpf is already on our database',
+      });
+      return;
+    }
+    res.sendStatus(201);
+  } catch (e) {
+    res.sendStatus(500);
   }
-
-  if (isValidCpf) {
-    res.status(409).send({
-      message: 'Looks like this cpf is already on our database',
-    });
-    return;
-  }
-
-  res.sendStatus(201);
 }
 
-export default postSignUp;
+const postSignIn = async (req, res) => {
+  const {
+    email,
+    password,
+  } = req.body;
+
+  if (signInValidation.validate(req.body).error) {
+    res.sendStatus(400);
+    return;
+  }
+
+  try {
+    const result = await connection.query(`SELECT * FROM users
+          WHERE email = $1`, [email]);
+
+    const user = result.rows[0];
+
+    if (!user) {
+      res.sendStatus(404);
+      return;
+    }
+
+    if (!bcrypt.compareSync(password, user.password)) {
+      res.sendStatus(401);
+      return;
+    }
+
+    const token = uuid();
+    await connection.query(`INSERT INTO sessions (user_id, token) 
+          VALUES($1, $2)`, [user.id, token]);
+
+    res.send({
+      token,
+      user,
+    }).status(200);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+};
+
+export {
+  postSignUp,
+  postSignIn,
+};

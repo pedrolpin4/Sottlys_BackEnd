@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { getCategories, getSales, getTrends } from './controllers/filters.js';
-import postSignUp from './controllers/registration.js';
+import { postSignUp, postSignIn } from './controllers/registration.js';
 
 const app = express();
 app.use(express.json());
@@ -16,5 +16,6 @@ app.get('/trends', (req, res) => getTrends(req, res));
 app.get('/sales', (req, res) => getSales(req, res));
 
 app.post('/sign-up', (req, res) => postSignUp(req, res));
+app.post('/sign-in', (req, res) => postSignIn(req, res));
 
 export default app;

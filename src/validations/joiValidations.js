@@ -16,4 +16,12 @@ const signUpValidation = Joi.object({
   phone: Joi.string().min(10).max(15).required(),
 });
 
-export default signUpValidation;
+const signInValidation = Joi.object({
+  email: Joi.string().email({ tlds: { allow: false } }).required(),
+  password: Joi.string().min(6).max(12).required(),
+});
+
+export {
+  signUpValidation,
+  signInValidation,
+};
