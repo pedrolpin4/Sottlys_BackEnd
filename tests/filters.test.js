@@ -45,7 +45,7 @@ describe('GET /filters', () => {
     expect(result.body.length).toEqual(12);
   });
 
-  it('GET /trends returns 4 trends and 5 categories', async () => {
+  it('GET /trends returns 3 trends and 5 categories', async () => {
     const result = await supertest(app)
       .get('/trends');
     expect(result.body.length).toEqual(3);
@@ -53,7 +53,7 @@ describe('GET /filters', () => {
     expect(result.body[0].name).toEqual('verão');
   });
 
-  it('GET /sales returns 3 trends and 5 categories', async () => {
+  it('GET /sales returns 3 sales and 5 categories', async () => {
     const result = await supertest(app)
       .get('/sales');
     expect(result.body.length).toEqual(3);
