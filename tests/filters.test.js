@@ -50,10 +50,7 @@ describe('GET /filters', () => {
       .get('/trends');
     expect(result.body.length).toEqual(3);
     expect(result.body[0].categories.length).toBeLessThanOrEqual(5);
-    expect(result.body[0]).toEqual({
-      name: 'verão',
-      categories: ['cat1'],
-    });
+    expect(result.body[0].name).toEqual('verão');
   });
 
   it('GET /sales returns 3 trends and 5 categories', async () => {
@@ -61,9 +58,6 @@ describe('GET /filters', () => {
       .get('/sales');
     expect(result.body.length).toEqual(3);
     expect(result.body[0].products.length).toBeLessThanOrEqual(5);
-    expect(result.body[0]).toEqual({
-      name: '50% off em sapatos',
-      products: ['prod1'],
-    });
+    expect(result.body[0].name).toEqual('50% off em sapatos');
   });
 });

@@ -29,15 +29,24 @@ async function getTrends(req, res) {
     res.send([
       {
         name: trends.rows[0].name,
-        categories: trend1.rows.map((cat) => cat.name),
+        categories: trend1.rows.map((cat) => ({
+          name: cat.name,
+          id: cat.id,
+        })),
       },
       {
         name: trends.rows[1].name,
-        categories: trend3.rows.map((cat) => cat.name),
+        categories: trend3.rows.map((cat) => ({
+          name: cat.name,
+          id: cat.id,
+        })),
       },
       {
         name: trends.rows[2].name,
-        categories: trend2.rows.map((cat) => cat.name),
+        categories: trend2.rows.map((cat) => ({
+          name: cat.name,
+          id: cat.id,
+        })),
       },
     ]);
   } catch (e) {
@@ -62,15 +71,24 @@ async function getSales(req, res) {
     res.send([
       {
         name: sales.rows[0].name,
-        products: sale1.rows.map((cat) => cat.name),
+        products: sale1.rows.map((prod) => ({
+          name: prod.name,
+          id: prod.id,
+        })),
       },
       {
         name: sales.rows[1].name,
-        products: sale3.rows.map((cat) => cat.name),
+        products: sale2.rows.map((prod) => ({
+          name: prod.name,
+          id: prod.id,
+        })),
       },
       {
         name: sales.rows[2].name,
-        products: sale2.rows.map((cat) => cat.name),
+        products: sale3.rows.map((prod) => ({
+          name: prod.name,
+          id: prod.id,
+        })),
       },
     ]);
   } catch (e) {
