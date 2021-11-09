@@ -54,7 +54,7 @@ describe('GET /filters', () => {
       name: 'verão',
       categories: ['cat1'],
     });
-  })
+  });
 
   it('GET /sales returns 3 trends and 5 categories', async () => {
     const result = await supertest(app)
