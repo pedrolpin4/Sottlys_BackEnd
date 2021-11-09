@@ -42,7 +42,7 @@ describe('GET /filters', () => {
   it('GET /categories returns the categories first 10 categories', async () => {
     const result = await supertest(app)
       .get('/categories');
-    expect(result.body.length).toEqual(10);
+    expect(result.body.length).toEqual(12);
   });
 
   it('GET /trends returns 3 trends and 5 categories', async () => {

@@ -3,7 +3,7 @@ import connection from '../database/database.js';
 async function getCategories(req, res) {
   try {
     const categories = await connection.query(`
-        SELECT * FROM categories LIMIT 10
+        SELECT * FROM categories LIMIT 12
     `);
     res.send(categories.rows);
   } catch (e) {
