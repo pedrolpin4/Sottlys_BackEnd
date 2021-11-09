@@ -19,11 +19,11 @@ async function getTrends(req, res) {
       return;
     }
 
-    const trend1 = await connection.query(`SELECT categories.name FROM trends_categories
+    const trend1 = await connection.query(`SELECT categories.name, categories.id FROM trends_categories
       JOIN categories ON categories.id = trends_categories.category_id WHERE trends_categories.trend_id = $1 LIMIT 5`, [trends.rows[0].id]);
-    const trend2 = await connection.query(`SELECT categories.name FROM trends_categories
+    const trend2 = await connection.query(`SELECT categories.name, categories.id FROM trends_categories
       JOIN categories ON categories.id = trends_categories.category_id WHERE trends_categories.trend_id = $1 LIMIT 5`, [trends.rows[1].id]);
-    const trend3 = await connection.query(`SELECT categories.name FROM trends_categories
+    const trend3 = await connection.query(`SELECT categories.name, categories.id FROM trends_categories
       JOIN categories ON categories.id = trends_categories.category_id WHERE trends_categories.trend_id = $1 LIMIT 5`, [trends.rows[2].id]);
 
     res.send([
@@ -62,11 +62,11 @@ async function getSales(req, res) {
       return;
     }
 
-    const sale1 = await connection.query(`SELECT products.name FROM products_sales
+    const sale1 = await connection.query(`SELECT products.name, products.id FROM products_sales
       JOIN products ON products.id = products_sales.product_id WHERE products_sales.sales_id = $1 LIMIT 5`, [sales.rows[0].id]);
-    const sale2 = await connection.query(`SELECT products.name FROM products_sales
+    const sale2 = await connection.query(`SELECT products.name, products.id FROM products_sales
       JOIN products ON products.id = products_sales.product_id WHERE products_sales.sales_id = $1 LIMIT 5`, [sales.rows[1].id]);
-    const sale3 = await connection.query(`SELECT products.name FROM products_sales
+    const sale3 = await connection.query(`SELECT products.name, products.id FROM products_sales
       JOIN products ON products.id = products_sales.product_id WHERE products_sales.sales_id = $1 LIMIT 5`, [sales.rows[2].id]);
     res.send([
       {
