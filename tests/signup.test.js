@@ -6,7 +6,7 @@ import connection from '../src/database/database.js';
 describe('POST /sign-up', () => {
   beforeAll(async () => {
     await connection.query(`INSERT INTO address (district, city, neighborhood, street, number) 
-        VALUES ('RJ', 'new iguaçu', 'little factory', 'street michal fields', '87')`);
+        VALUES ('RJ', 'new iguaçu', 'little factory', 'street michal fields', 87)`);
 
     const address = await connection.query('SELECT * FROM address');
 
@@ -15,8 +15,8 @@ describe('POST /sign-up', () => {
   });
 
   afterAll(async () => {
-    await connection.query('DELETE FROM address');
     await connection.query('DELETE FROM users');
+    await connection.query('DELETE FROM address');
   });
 
   it('should return 400 if missing fields', async () => {
@@ -72,18 +72,19 @@ describe('POST /sign-up', () => {
 
   it('should return 409 and a message if email conflict', async () => {
     const body = {
-      name: 'oi',
+      name: 'oii',
       email: 'oi@uol.com',
-      password: '123',
+      password: '123456',
+      cpf: '18715258812',
       address: {
         district: 'RS',
         city: 'new york',
         neighborhood: 'little industry',
-        number: 'street michal fields',
+        street: 'street michal fields',
+        number: 87,
         complement: '',
       },
       phone: '21978542564',
-      cpf: '18715258812',
     };
 
     const result = await supertest(app)
@@ -97,18 +98,19 @@ describe('POST /sign-up', () => {
 
   it('should return 409 and a message if cpf conflict', async () => {
     const body = {
-      name: 'oi',
+      name: 'oii',
       email: 'oi@gmail.com',
-      password: '123',
+      password: '123456',
+      cpf: '18615158711',
       address: {
         district: 'RS',
         city: 'new york',
         neighborhood: 'little industry',
-        number: 'street michal fields',
+        street: 'street michal fields',
+        number: 87,
         complement: '',
       },
       phone: '21978542564',
-      cpf: '18615158711',
     };
 
     const result = await supertest(app)
@@ -116,24 +118,25 @@ describe('POST /sign-up', () => {
       .send(body);
     expect(result.status).toEqual(409);
     expect(result.body).toEqual({
-      message: 'Looks like this email is already on our database',
+      message: 'Looks like this cpf is already on our database',
     });
   });
 
   it('should return 201 if valid fields', async () => {
     const body = {
-      name: 'oi',
+      name: 'oii',
       email: 'oi@gmail.com',
-      password: '123',
+      password: '123456',
+      cpf: '18715258812',
       address: {
         district: 'RS',
         city: 'new york',
         neighborhood: 'little industry',
-        number: 'street michal fields',
+        street: 'street michal fields',
+        number: 87,
         complement: '',
       },
       phone: '21978542564',
-      cpf: '18715258812',
     };
 
     const result = await supertest(app)
