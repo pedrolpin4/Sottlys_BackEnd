@@ -6,8 +6,8 @@ import connection from '../src/database/database.js';
 describe('GET /filters', () => {
   beforeAll(async () => {
     await connection.query(`INSERT INTO categories (name) VALUES  ('cat1'), ('cat2'), ('cat3'), ('cat4'),
-      ('cat5'), ('cat6'), ('cat7'), ('cat8'), ('cat9'), ('cat10'), ('cat11'), ('cat12'), ('cat13')`);
-    await connection.query("INSERT INTO trends (name) VALUES ('verão'), ('praia'), ('ar livre'), ('leve')");
+      ('cat5'), ('cat6'), ('cat7'), ('cat8'), ('cat9'), ('cat10'), ('cat11'), ('cat12')`);
+    await connection.query("INSERT INTO trends (name) VALUES ('verão'), ('ar livre'), ('leve')");
     await connection.query("INSERT INTO sales (name) VALUES ('50% off em sapatos'), ('20% off em roupas de banho'), ('blusas a partir de R$39,90')");
     await connection.query(`INSERT INTO products (name, description, price, installments) VALUES  ('prod1', 'sou barato', 2.40, 3), ('prod2', 'sou barato', 2.40, 3), 
       ('prod3', 'sou barato', 2.40, 3), ('prod4', 'sou barato', 2.40, 3), ('prod5', 'sou barato', 2.40, 3), ('prod6', 'sou barato', 2.40, 3), ('prod7', 'sou barato', 2.40, 3), 
@@ -25,7 +25,7 @@ describe('GET /filters', () => {
     const idSale = sales.rows[0].id;
 
     await connection.query(`INSERT INTO trends_categories (trend_id, category_id) VALUES
-      (${idTrend}, ${idCat}), (${idTrend + 1}, ${idCat + 1}),(${idTrend + 2}, ${idCat + 2}),(${idTrend + 3}, ${idCat + 3})`);
+      (${idTrend}, ${idCat}), (${idTrend + 1}, ${idCat + 1}),(${idTrend + 2}, ${idCat + 2})`);
     await connection.query(`INSERT INTO products_sales (product_id, sales_id, new_price) VALUES
       (${idProduct}, ${idSale}, 1.20), (${idProduct + 1}, ${idSale + 1}, 1.20),(${idProduct + 2}, ${idSale + 2}, 1.20)`);
   });
@@ -39,13 +39,13 @@ describe('GET /filters', () => {
     await connection.query('DELETE FROM categories');
   });
 
-  it('GET /categories returns the categories first 10 categories', async () => {
+  it('GET /categories returns the categories first 60 categories', async () => {
     const result = await supertest(app)
       .get('/categories');
     expect(result.body.length).toEqual(12);
   });
 
-  it('GET /trends returns 3 trends and 5 categories', async () => {
+  it('GET /trends returns 4 trends and 5 categories', async () => {
     const result = await supertest(app)
       .get('/trends');
     expect(result.body.length).toEqual(3);
