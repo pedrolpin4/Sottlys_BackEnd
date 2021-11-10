@@ -43,7 +43,7 @@ async function postSignUp(req, res) {
       return;
     }
     if (isValidCpf) {
-      res.status(409).send({
+      res.status(401).send({
         message: 'Looks like this cpf is already on our database',
       });
       return;
