@@ -94,7 +94,7 @@ describe('POST /sign-up', () => {
     });
   });
 
-  it('should return 409 and a message if cpf conflict', async () => {
+  it('should return 401 and a message if cpf conflict', async () => {
     const body = {
       name: 'oii',
       email: 'oi@gmail.com',
@@ -114,7 +114,7 @@ describe('POST /sign-up', () => {
     const result = await supertest(app)
       .post('/sign-up')
       .send(body);
-    expect(result.status).toEqual(409);
+    expect(result.status).toEqual(401);
     expect(result.body).toEqual({
       message: 'Looks like this cpf is already on our database',
     });
