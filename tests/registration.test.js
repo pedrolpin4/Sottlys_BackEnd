@@ -94,7 +94,7 @@ describe('POST /sign-up', () => {
     });
   });
 
-  it('should return 409 and a message if cpf conflict', async () => {
+  it('should return 401 and a message if cpf conflict', async () => {
     const body = {
       name: 'oii',
       email: 'oi@gmail.com',
