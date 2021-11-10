@@ -13,6 +13,10 @@ async function getMainCategories(req, res) {
 
 async function getProductsByCategory(req, res) {
   const { id } = req.params;
+  if (!Number(id)) {
+    res.sendStatus(400);
+    return;
+  }
 
   try {
     const products = await connection.query(`
