@@ -29,7 +29,7 @@ async function getBasket(req, res) {
 
     const products = await connection.query('SELECT * FROM products');
     const colors = await connection.query('SELECT * FROM colors');
-    const sizes = await connection.query('SELECT * FROM colors');
+    const sizes = await connection.query('SELECT * FROM sizes');
 
     const basket = result.rows.map((e) => (
       {
