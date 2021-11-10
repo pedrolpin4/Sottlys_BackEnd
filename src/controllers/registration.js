@@ -4,8 +4,18 @@ import connection from '../database/database.js';
 import { signInValidation, signUpValidation } from '../validations/joiValidations.js';
 
 async function postSignUp(req, res) {
-  const { body } = req;
-  const validation = signUpValidation.validate(body);
+  const {
+    name,
+    email,
+    password,
+    cpf,
+    address,
+    phone,
+  } = req.body;
+
+  const encriptedPassword = bcrypt.hashSync(`${password}`, 10);
+
+  const validation = signUpValidation.validate(req.body);
   if (validation.error) {
     res.status(400).send({
       message: validation.error.message,
@@ -13,10 +23,19 @@ async function postSignUp(req, res) {
     return;
   }
 
+  const {
+    district,
+    city,
+    neighborhood,
+    street,
+    number,
+    complement,
+  } = address;
+
   try {
     const users = await connection.query('SELECT * FROM users');
-    const isValidEmail = users.rows.some((user) => user.email === body.email);
-    const isValidCpf = users.rows.some((user) => user.cpf === body.cpf);
+    const isValidEmail = users.rows.some((user) => user.email === req.body.email);
+    const isValidCpf = users.rows.some((user) => user.cpf === req.body.cpf);
     if (isValidEmail) {
       res.status(409).send({
         message: 'Looks like this email is already on our database',
@@ -29,6 +48,14 @@ async function postSignUp(req, res) {
       });
       return;
     }
+
+    await connection.query(`INSERT INTO address (district, city, neighborhood, street, number, complement) 
+      VALUES ($1, $2, $3, $4, $5, $6)`, [district, city, neighborhood, street, number, complement]);
+
+    const addressResult = await connection.query('SELECT * FROM address WHERE street = $1 AND number = $2', [street, number]);
+
+    await connection.query(`INSERT INTO users (name, email, password, address_id, phone, cpf) 
+        VALUES ($1, $2, '${encriptedPassword}', '${addressResult.rows[0].id}', $3, $4)`, [name, email, phone, cpf]);
     res.sendStatus(201);
   } catch (e) {
     res.sendStatus(500);
