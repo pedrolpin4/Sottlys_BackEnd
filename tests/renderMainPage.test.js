@@ -14,21 +14,21 @@ describe('GET /main-categories', () => {
 describe('GET /products-category/:id', () => {
   let id = '';
   beforeAll(async () => {
-    await connection.query(`INSERT INTO categories (name) VALUES ('cat1');`);
-    await connection.query(`INSERT INTO products (name, description, price, installments) VALUES ('mais uma blusa', 'blusa super confortavel e suave', 150.00, 6);`);
+    await connection.query("INSERT INTO categories (name) VALUES ('cat1');");
+    await connection.query("INSERT INTO products (name, description, price, installments) VALUES ('mais uma blusa', 'blusa super confortavel e suave', 150.00, 6);");
 
-    const category = await connection.query(`SELECT * FROM categories WHERE name = 'cat1';`);
+    const category = await connection.query("SELECT * FROM categories WHERE name = 'cat1';");
     const idCategory = category.rows[0].id;
-    const product = await connection.query(`SELECT * FROM products WHERE name = 'mais uma blusa';`);
+    const product = await connection.query("SELECT * FROM products WHERE name = 'mais uma blusa';");
     const idProduct = product.rows[0].id;
 
-    await connection.query(`INSERT INTO products_categories (product_id, category_id) VALUES ($1,$2);`, [idProduct, idCategory]);
+    await connection.query('INSERT INTO products_categories (product_id, category_id) VALUES ($1,$2);', [idProduct, idCategory]);
     id = idCategory;
   });
 
   afterAll(async () => {
     await connection.query('DELETE FROM products_categories WHERE category_id =$1 ', [id]);
-    await connection.query(`DELETE FROM products WHERE name = 'mais uma blusa';`);
+    await connection.query("DELETE FROM products WHERE name = 'mais uma blusa';");
     await connection.query('DELETE FROM categories WHERE id =$1', [id]);
     id = '';
   });

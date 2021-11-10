@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import connection from '../database/database.js';
 
 async function getCategories(req, res) {
@@ -11,48 +12,48 @@ async function getCategories(req, res) {
   }
 }
 
-async function getTrends(req, res) {
-  try {
-    const trends = await connection.query('SELECT * FROM trends LIMIT 3');
-    if (trends.rows < 3) {
-      res.sendStatus(404);
-      return;
-    }
+// async function getTrends(req, res) {
+//   try {
+//     const trends = await connection.query('SELECT * FROM trends LIMIT 3');
+//     if (trends.rows < 3) {
+//       res.sendStatus(404);
+//       return;
+//     }
 
-    const trend1 = await connection.query(`SELECT categories.name, categories.id FROM trends_categories
-      JOIN categories ON categories.id = trends_categories.category_id WHERE trends_categories.trend_id = $1 LIMIT 5`, [trends.rows[0].id]);
-    const trend2 = await connection.query(`SELECT categories.name, categories.id FROM trends_categories
-      JOIN categories ON categories.id = trends_categories.category_id WHERE trends_categories.trend_id = $1 LIMIT 5`, [trends.rows[1].id]);
-    const trend3 = await connection.query(`SELECT categories.name, categories.id FROM trends_categories
-      JOIN categories ON categories.id = trends_categories.category_id WHERE trends_categories.trend_id = $1 LIMIT 5`, [trends.rows[2].id]);
+//     const trend1 = await connection.query(`SELECT categories.name, categories.id FROM trends_categories
+//       JOIN categories ON categories.id = trends_categories.category_id WHERE trends_categories.trend_id = $1 LIMIT 5`, [trends.rows[0].id]);
+//     const trend2 = await connection.query(`SELECT categories.name, categories.id FROM trends_categories
+//       JOIN categories ON categories.id = trends_categories.category_id WHERE trends_categories.trend_id = $1 LIMIT 5`, [trends.rows[1].id]);
+//     const trend3 = await connection.query(`SELECT categories.name, categories.id FROM trends_categories
+//       JOIN categories ON categories.id = trends_categories.category_id WHERE trends_categories.trend_id = $1 LIMIT 5`, [trends.rows[2].id]);
 
-    res.send([
-      {
-        name: trends.rows[0].name,
-        categories: trend1.rows.map((cat) => ({
-          name: cat.name,
-          id: cat.id,
-        })),
-      },
-      {
-        name: trends.rows[1].name,
-        categories: trend3.rows.map((cat) => ({
-          name: cat.name,
-          id: cat.id,
-        })),
-      },
-      {
-        name: trends.rows[2].name,
-        categories: trend2.rows.map((cat) => ({
-          name: cat.name,
-          id: cat.id,
-        })),
-      },
-    ]);
-  } catch (e) {
-    res.sendStatus(500);
-  }
-}
+//     res.send([
+//       {
+//         name: trends.rows[0].name,
+//         categories: trend1.rows.map((cat) => ({
+//           name: cat.name,
+//           id: cat.id,
+//         })),
+//       },
+//       {
+//         name: trends.rows[1].name,
+//         categories: trend3.rows.map((cat) => ({
+//           name: cat.name,
+//           id: cat.id,
+//         })),
+//       },
+//       {
+//         name: trends.rows[2].name,
+//         categories: trend2.rows.map((cat) => ({
+//           name: cat.name,
+//           id: cat.id,
+//         })),
+//       },
+//     ]);
+//   } catch (e) {
+//     res.sendStatus(500);
+//   }
+// }
 
 async function getSales(req, res) {
   try {
@@ -98,6 +99,5 @@ async function getSales(req, res) {
 
 export {
   getCategories,
-  getTrends,
   getSales,
 };
