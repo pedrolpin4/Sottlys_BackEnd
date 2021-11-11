@@ -21,6 +21,8 @@ describe('GET "/basket" ', () => {
     const users = await connection.query('SELECT * FROM users');
     const idUser = users.rows[0].id;
 
+    await connection.query(`INSERT INTO sessions (user_id, token) VALUES  (${idUser}, '${token}')`);
+
     await connection.query("INSERT INTO products (name, description, price, installments) VALUES  ('prod1', 'sou barato', 2.40, 3)");
 
     const products = await connection.query('SELECT * FROM products');
@@ -30,7 +32,7 @@ describe('GET "/basket" ', () => {
     const colors = await connection.query('SELECT * FROM colors');
     const idColor = colors.rows[0].id;
 
-    await connection.query("INSERT INTO sizes (name) VALUES 'P'");
+    await connection.query("INSERT INTO sizes (name) VALUES ('P')");
     const sizes = await connection.query('SELECT * FROM sizes');
     const idSize = sizes.rows[0].id;
 
@@ -38,24 +40,25 @@ describe('GET "/basket" ', () => {
         VALUES (${idProduct}, ${idUser}, ${idSize}, ${idColor})`);
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await connection.query('DELETE FROM basket_products');
+  });
+
+  afterAll(async () => {
     await connection.query('DELETE FROM products');
     await connection.query('DELETE FROM sizes');
     await connection.query('DELETE FROM colors');
   });
 
-  it('GET "/basket" returns 200 if valid token and has transactions', async () => {
+  it('GET "/basket" returns 200 if valid token and has products', async () => {
     const result = await supertest(app)
       .get('/basket')
       .set('Authorization', `Bearer ${token}`);
     expect(result.status).toEqual(200);
-    expect(result.body).toEqual([{
-      products: expect.any(Array),
-    }]);
+    expect(result.body).toEqual(expect.any(Array));
   });
 
-  it('GET "/basket" returns 204 if valid token and no transactions', async () => {
+  it('GET "/basket" returns 204 if valid token and no products', async () => {
     const result = await supertest(app)
       .get('/basket')
       .set('Authorization', `Bearer ${token}`);
