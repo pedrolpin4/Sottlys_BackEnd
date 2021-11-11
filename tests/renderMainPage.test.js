@@ -48,6 +48,6 @@ describe('GET /products-category/:id', () => {
   it('Should array images if there is a product', async () => {
     const result = await supertest(app)
       .get(`/products-category/${id}`);
-    expect(result.body[0].images).toEqual([]);
+    expect(result.body[0].images).toEqual(expect.any(Array));
   });
 });
