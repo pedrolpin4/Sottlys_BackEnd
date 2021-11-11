@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { getCategories, getSales } from './controllers/filters.js';
+import { getCategories, getSales, getTrends } from './controllers/filters.js';
 import { getMainCategories, getProductsByCategory } from './controllers/homePosts.js';
 import { postSignUp, postSignIn } from './controllers/registration.js';
 import getBasket from './controllers/basket.js';
@@ -15,7 +15,7 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/categories', (req, res) => getCategories(req, res));
-// app.get('/trends', (req, res) => getTrends(req, res));
+app.get('/trends', (req, res) => getTrends(req, res));
 app.get('/sales', (req, res) => getSales(req, res));
 
 app.get('/main-categories', (req, res) => getMainCategories(req, res));
