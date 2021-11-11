@@ -36,6 +36,7 @@ async function getBasket(req, res) {
         product: products.rows.filter((prod) => prod.id === e.product_id)[0],
         colors: colors.rows.filter((color) => color.id === e.color_id)[0],
         size: sizes.rows.filter((size) => size.id === e.size_id)[0],
+        quantity: e.quantity,
       }
     ));
 

@@ -8,21 +8,21 @@ describe('POST /basket', () => {
 
   })
 
-  it('Should returns 201 when item insert into basket', async () => {
+  it('Should returns 401 when receive an invalid token ', async () => {
         const result = await supertest(app)
-          .get('/products-category/1');
-        expect(result.body.length).toBeLessThanOrEqual(16);
+          .post('/basket');
+          expect(result.status).toEqual(401);
   });
 
-  it('Should returns 201 when item insert into basket', async () => {
+  it('Should returns 400 if receive an non-existent id', async () => {
         const result = await supertest(app)
-          .get('/products-category/1');
-        expect(result.body.length).toBeLessThanOrEqual(16);
+          .post('/basket');
+        expect(result.status).toEqual(400);
   });
       
   it('Should returns 201 when item insert into basket', async () => {
         const result = await supertest(app)
-          .get('/products-category/1');
-        expect(result.body.length).toBeLessThanOrEqual(16);
+          .post('/basket');
+        expect(result.status).toEqual(201)
   });
 }
