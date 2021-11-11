@@ -5,8 +5,8 @@ import connection from '../src/database/database.js';
 
 describe('GET /filters', () => {
   beforeAll(async () => {
-    await connection.query(`INSERT INTO categories (name) VALUES  ('cat1'), ('cat2'), ('cat3'), ('cat4'),
-      ('cat5'), ('cat6'), ('cat7'), ('cat8'), ('cat9'), ('cat10'), ('cat11'), ('cat12')`);
+    await connection.query(`INSERT INTO categories (name, is_trend) VALUES  ('cat1', '0'), ('cat2', '0'), ('cat3', '0'), ('cat4', '0'),
+      ('cat5', '1'), ('cat6', '0'), ('cat7', '0'), ('cat8', '0'), ('cat9', '1'), ('cat10', '0'), ('cat11', '1'), ('cat12', '0')`);
     await connection.query("INSERT INTO sales (name) VALUES ('50% off em sapatos'), ('20% off em roupas de banho'), ('blusas a partir de R$39,90')");
     await connection.query(`INSERT INTO products (name, description, price, installments) VALUES  ('prod1', 'sou barato', 2.40, 3), ('prod2', 'sou barato', 2.40, 3), 
       ('prod3', 'sou barato', 2.40, 3), ('prod4', 'sou barato', 2.40, 3), ('prod5', 'sou barato', 2.40, 3), ('prod6', 'sou barato', 2.40, 3), ('prod7', 'sou barato', 2.40, 3), 
@@ -26,20 +26,29 @@ describe('GET /filters', () => {
   afterAll(async () => {
     await connection.query('DELETE FROM products_sales');
     await connection.query('DELETE FROM sales');
-    await connection.query('DELETE FROM products');
+    await connection.query('DELETE FROM products WHERE installments = 3');
     await connection.query('DELETE FROM categories');
   });
 
   it('GET /categories returns the categories first 60 categories', async () => {
     const result = await supertest(app)
       .get('/categories');
+    expect(result.status).toEqual(200);
     expect(result.body.length).toBeLessThanOrEqual(60);
+  });
+
+  it('GET /trends returns the categories first 6 trends', async () => {
+    const result = await supertest(app)
+      .get('/trends');
+    expect(result.status).toEqual(200);
+    expect(result.body.length).toBeLessThanOrEqual(6);
   });
 
   it('GET /sales returns 3 sales and 5 categories', async () => {
     const result = await supertest(app)
       .get('/sales');
     expect(result.body.length).toEqual(3);
+    expect(result.status).toEqual(200);
     expect(result.body[0].products.length).toBeLessThanOrEqual(5);
     expect(result.body[0].name).toEqual('50% off em sapatos');
   });
