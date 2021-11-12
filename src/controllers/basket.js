@@ -27,15 +27,18 @@ async function getBasket(req, res) {
       return;
     }
 
-    const products = await connection.query('SELECT * FROM products');
-    const colors = await connection.query('SELECT * FROM colors');
-    const sizes = await connection.query('SELECT * FROM sizes');
+    const products = await connection.query('SELECT * FROM products;');
+    const colors = await connection.query('SELECT * FROM colors;');
+    const sizes = await connection.query('SELECT * FROM sizes;');
+    const images = await connection.query(`SELECT images.*, products_images.product_id FROM products_images JOIN images
+      ON products_images.image_id = images.id;`);
 
     const basket = result.rows.map((e) => (
       {
         product: products.rows.filter((prod) => prod.id === e.product_id)[0],
         colors: colors.rows.filter((color) => color.id === e.color_id)[0],
         size: sizes.rows.filter((size) => size.id === e.size_id)[0],
+        image: images.rows.filter((image) => image.product_id === e.product_id)[0],
         quantity: e.quantity,
       }
     ));
