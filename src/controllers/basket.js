@@ -79,7 +79,6 @@ async function updateQuantity(req, res) {
 async function deleteQuantity(req, res) {
   const { authorization } = req.headers;
   const token = authorization?.replace('Bearer ', '');
-
   const {
     productId,
   } = req.body;
