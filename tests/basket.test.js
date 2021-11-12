@@ -79,4 +79,24 @@ describe('GET "/basket" ', () => {
       .set('Authorization', 'Bearer kdjksadjadksd');
     expect(result.status).toEqual(401);
   });
+
+  it('PUT /quantity returns 401 if invalid token', async () => {
+    const result = await supertest(app)
+      .put('/quantity');
+    expect(result.status).toEqual(401);
+  });
+
+  it('PUT /quantity returns 401 if invalid token', async () => {
+    const result = await supertest(app)
+      .put('/quantity')
+      .set('Authorization', 'Bearer kdjksadjadksd');
+    expect(result.status).toEqual(401);
+  });
+
+  it('PUT /quantity returns 200 if valid token', async () => {
+    const result = await supertest(app)
+      .put('/quantity')
+      .set('Authorization', `Bearer ${token}`);
+    expect(result.status).toEqual(200);
+  });
 });

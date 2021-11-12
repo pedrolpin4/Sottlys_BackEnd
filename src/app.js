@@ -3,7 +3,7 @@ import cors from 'cors';
 import { getCategories, getSales, getTrends } from './controllers/filters.js';
 import { getMainCategories, getProductsByCategory } from './controllers/homePosts.js';
 import { postSignUp, postSignIn } from './controllers/registration.js';
-import getBasket from './controllers/basket.js';
+import { getBasket, updateQuantity } from './controllers/basket.js';
 import postBasket from './controllers/postBasket.js';
 
 const app = express();
@@ -26,5 +26,6 @@ app.post('/basket', (req, res) => postBasket(req, res));
 
 app.post('/sign-up', (req, res) => postSignUp(req, res));
 app.post('/sign-in', (req, res) => postSignIn(req, res));
+app.put('/quantity', (req, res) => updateQuantity(req, res));
 
 export default app;
