@@ -26,7 +26,7 @@ describe('GET /filters', () => {
   afterAll(async () => {
     await connection.query('DELETE FROM products_sales');
     await connection.query('DELETE FROM sales');
-    await connection.query('DELETE FROM products WHERE installments = 3');
+    await connection.query('DELETE FROM products WHERE price = $1', [2.40]);
     await connection.query('DELETE FROM categories');
   });
 

@@ -21,7 +21,16 @@ const signInValidation = Joi.object({
   password: Joi.string().min(6).max(12).required(),
 });
 
+const basketValidation = Joi.object({
+  userId: Joi.number().required(),
+  productId: Joi.number().required(),
+  colorId: Joi.number().optional(),
+  sizeId: Joi.number().optional(),
+  quantity: Joi.number().positive().optional(),
+});
+
 export {
   signUpValidation,
   signInValidation,
+  basketValidation,
 };
