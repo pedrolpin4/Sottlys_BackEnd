@@ -49,4 +49,34 @@ async function getBasket(req, res) {
   }
 }
 
-export default getBasket;
+async function updateQuantity(req, res) {
+  const { authorization } = req.headers;
+  const token = authorization?.replace('Bearer ', '');
+  const {
+    productId,
+    quantity,
+  } = req.body;
+
+  try {
+    const user = await connection.query(`
+            SELECT * FROM sessions
+            WHERE token = $1
+        `, [token]);
+
+    if (!user.rows.length) {
+      res.sendStatus(401);
+      return;
+    }
+
+    await connection.query(`UPDATE basket_products SET quantity = $1
+      WHERE product_id = $2`, [quantity, productId]);
+    res.sendStatus(200);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+}
+
+export {
+  getBasket,
+  updateQuantity,
+};
