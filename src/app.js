@@ -4,6 +4,7 @@ import { getCategories, getSales, getTrends } from './controllers/filters.js';
 import { getMainCategories, getProductsByCategory } from './controllers/homePosts.js';
 import { postSignUp, postSignIn } from './controllers/registration.js';
 import getBasket from './controllers/basket.js';
+import postBasket from './controllers/postBasket.js';
 
 const app = express();
 app.use(express.json());
@@ -21,6 +22,7 @@ app.get('/main-categories', (req, res) => getMainCategories(req, res));
 app.get('/products-category/:id', (req, res) => getProductsByCategory(req, res));
 
 app.get('/basket', (req, res) => getBasket(req, res));
+app.post('/basket', (req, res) => postBasket(req, res));
 
 app.post('/sign-up', (req, res) => postSignUp(req, res));
 app.post('/sign-in', (req, res) => postSignIn(req, res));

@@ -45,7 +45,9 @@ describe('GET "/basket" ', () => {
   });
 
   afterAll(async () => {
-    await connection.query('DELETE FROM products');
+    await connection.query('DELETE FROM basket_products');
+    await connection.query('DELETE FROM products_images;');
+    await connection.query("DELETE FROM products WHERE name = 'prod1'");
     await connection.query('DELETE FROM sizes');
     await connection.query('DELETE FROM colors');
   });
