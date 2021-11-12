@@ -76,7 +76,40 @@ async function updateQuantity(req, res) {
   }
 }
 
+async function deleteQuantity(req, res) {
+  const { authorization } = req.headers;
+  const token = authorization?.replace('Bearer ', '');
+
+  const {
+    productId,
+  } = req.body;
+
+  try {
+    const user = await connection.query(`
+            SELECT * FROM sessions
+            WHERE token = $1
+        `, [token]);
+
+    if (!user.rows.length) {
+      res.sendStatus(401);
+      return;
+    }
+
+    const products = await connection.query('SELECT * FROM basket_products WHERE product_id = $1', [productId]);
+    if (!products.rowCount) {
+      res.sendStatus(404);
+      return;
+    }
+
+    await connection.query('DELETE FROM basket_products WHERE product_id = $1', [productId]);
+    res.sendStatus(200);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+}
+
 export {
   getBasket,
   updateQuantity,
+  deleteQuantity,
 };

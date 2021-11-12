@@ -53,7 +53,6 @@ export default async function postBasket(req, res) {
     await connection.query('INSERT INTO basket_products (user_id, product_id, color_id, size_id, quantity) VALUES ($1, $2, $3, $4, $5);', [userId, productId, colorId, sizeId, quantity || 1]);
     res.sendStatus(201);
   } catch (e) {
-    console.log(e);
     res.sendStatus(500);
   }
 }
