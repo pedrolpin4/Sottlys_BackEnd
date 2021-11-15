@@ -11,6 +11,17 @@ async function getMainCategories(req, res) {
   }
 }
 
+async function getProductsInSale(req, res) {
+  try {
+    const sales = await connection.query(`
+        SELECT sales.*, products_sales.product_id, products_sales.new_price FROM sales JOIN products_sales ON sales.id = products_sales.sales_id;
+      `);
+    res.send(sales.rows);
+  } catch (e) {
+    res.sendStatus(500);
+  }
+}
+
 async function getProductsByCategory(req, res) {
   const { id } = req.params;
   if (!Number(id)) {
@@ -91,6 +102,7 @@ async function getProductsBySales(req, res) {
 
 export {
   getMainCategories,
+  getProductsInSale,
   getProductsByCategory,
   getProductsBySales,
 };
