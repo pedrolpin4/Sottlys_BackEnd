@@ -24,7 +24,7 @@ async function getProductsByCategory(req, res) {
                 FROM products 
             JOIN products_categories 
                 ON products.id = products_categories.product_id 
-            WHERE products_categories.category_id = $1 ORDER BY id LIMIT 16;
+            WHERE products_categories.category_id = $1 ORDER BY id LIMIT 60;
         `, [id]);
 
     const images = await connection.query('SELECT images.*, products_images.product_id FROM images JOIN products_images ON images.id = products_images.image_id;');
