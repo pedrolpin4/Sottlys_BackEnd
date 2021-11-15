@@ -6,6 +6,8 @@ import { postSignUp, postSignIn } from './controllers/registration.js';
 import { deleteQuantity, getBasket, updateQuantity } from './controllers/basket.js';
 import postBasket from './controllers/postBasket.js';
 import postPayment from './controllers/checkout.js';
+import { getCategoryInfo } from './controllers/pages.js';
+
 
 const app = express();
 app.use(express.json());
@@ -31,5 +33,7 @@ app.post('/checkout', (req, res) => postPayment(req, res));
 
 app.post('/sign-up', (req, res) => postSignUp(req, res));
 app.post('/sign-in', (req, res) => postSignIn(req, res));
+
+app.get('/category/:id', (req, res) => getCategoryInfo(req, res));
 
 export default app;
