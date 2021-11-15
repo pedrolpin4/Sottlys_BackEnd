@@ -24,7 +24,7 @@ async function getSalesInfo(req, res) {
   }
 
   try {
-    const sales = await connection.query('SELECT * FROM sales WHERE id = $1', [id]);
+    const sales = await connection.query('SELECT * FROM sales WHERE id = $1;', [id]);
     res.send(sales.rows);
   } catch (e) {
     res.sendStatus(500);

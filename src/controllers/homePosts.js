@@ -3,7 +3,7 @@ import connection from '../database/database.js';
 async function getMainCategories(req, res) {
   try {
     const categories = await connection.query(`
-        SELECT * FROM categories ORDER BY id LIMIT 6;
+        SELECT * FROM categories ORDER BY id LIMIT 6
       `);
     res.send(categories.rows);
   } catch (e) {
