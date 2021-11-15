@@ -41,6 +41,7 @@ async function getHistory(req, res) {
       response[i].products = resp.products.map((e) => ({
         id: e.id,
         name: productsInfo.rows.filter((prod) => prod.id === e.product_id)[0].name,
+        description: productsInfo.rows.filter((prod) => prod.id === e.product_id)[0].description,
         price: productsInfo.rows.filter((prod) => prod.id === e.product_id)[0].price,
         color: colors.rows.filter((color) => color.id === e.color_id)[0].name,
         size: sizes.rows.filter((size) => size.id === e.size_id)[0].name,
