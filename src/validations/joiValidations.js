@@ -29,8 +29,15 @@ const basketValidation = Joi.object({
   quantity: Joi.number().positive().optional(),
 });
 
+const checkoutValidation = Joi.object({
+  installments: Joi.number().required(),
+  paymentMethod: Joi.string().valid('PIX', 'CARTÃO DE CRÉDITO').required(),
+  deliveryFee: Joi.number().required(),
+});
+
 export {
   signUpValidation,
   signInValidation,
   basketValidation,
+  checkoutValidation,
 };
