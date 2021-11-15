@@ -7,7 +7,7 @@ import { deleteQuantity, getBasket, updateQuantity } from './controllers/basket.
 import postBasket from './controllers/postBasket.js';
 import postPayment from './controllers/checkout.js';
 import { getCategoryInfo } from './controllers/pages.js';
-
+import getHistory from './controllers/history.js';
 
 const app = express();
 app.use(express.json());
@@ -30,6 +30,7 @@ app.put('/quantity', (req, res) => updateQuantity(req, res));
 app.delete('/basket', (req, res) => deleteQuantity(req, res));
 
 app.post('/checkout', (req, res) => postPayment(req, res));
+app.get('/history', (req, res) => getHistory(req, res));
 
 app.post('/sign-up', (req, res) => postSignUp(req, res));
 app.post('/sign-in', (req, res) => postSignIn(req, res));
