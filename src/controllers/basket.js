@@ -42,8 +42,22 @@ async function getBasket(req, res) {
         quantity: e.quantity,
       }
     ));
+    const salesProducts = await connection.query('SELECT * FROM products_sales;');
+    const newBasket = basket.map((e) => {
+      const newArray = salesProducts.rows.filter((prod) => prod.product_id === e.product.id);
+      if (newArray.length !== 0) {
+        return ({
+          ...e,
+          product: {
+            ...e.product,
+            price: newArray[0].new_price,
+          },
+        });
+      }
+      return ({ ...e });
+    });
 
-    res.send(basket);
+    res.send(newBasket);
   } catch (error) {
     res.sendStatus(500);
   }
