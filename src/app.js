@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import { getCategories, getSales, getTrends } from './controllers/filters.js';
-import { getMainCategories, getProductsInSale, getProductsByCategory, getProductsBySales } from './controllers/homePosts.js';
+import {
+  getMainCategories, getProductsInSale, getProductsByCategory, getProductsBySales,
+} from './controllers/homePosts.js';
 import { postSignUp, postSignIn } from './controllers/registration.js';
 import { deleteQuantity, getBasket, updateQuantity } from './controllers/basket.js';
 import postBasket from './controllers/postBasket.js';
