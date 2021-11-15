@@ -13,7 +13,7 @@ describe('POST /basket', () => {
     product = await createProduct();
   });
   afterAll(async () => {
-    await connection.query("DELETE FROM basket_products");
+    await connection.query('DELETE FROM basket_products');
     await deleteProduct();
   });
 
