@@ -1,13 +1,13 @@
 import express from 'express';
 import cors from 'cors';
 import { getCategories, getSales, getTrends } from './controllers/filters.js';
-import { getMainCategories, getProductsByCategory } from './controllers/homePosts.js';
+import { getMainCategories, getProductsByCategory, getProductsBySales } from './controllers/homePosts.js';
 import { postSignUp, postSignIn } from './controllers/registration.js';
 import { deleteQuantity, getBasket, updateQuantity } from './controllers/basket.js';
 import postBasket from './controllers/postBasket.js';
 import postPayment from './controllers/checkout.js';
-import { getCategoryInfo } from './controllers/pages.js';
 import getHistory from './controllers/history.js';
+import { getCategoryInfo, getSalesInfo } from './controllers/pages.js';
 
 const app = express();
 app.use(express.json());
@@ -23,6 +23,7 @@ app.get('/sales', (req, res) => getSales(req, res));
 
 app.get('/main-categories', (req, res) => getMainCategories(req, res));
 app.get('/products-category/:id', (req, res) => getProductsByCategory(req, res));
+app.get('/products-sales/:id', (req, res) => getProductsBySales(req, res));
 
 app.get('/basket', (req, res) => getBasket(req, res));
 app.post('/basket', (req, res) => postBasket(req, res));
@@ -36,5 +37,6 @@ app.post('/sign-up', (req, res) => postSignUp(req, res));
 app.post('/sign-in', (req, res) => postSignIn(req, res));
 
 app.get('/category/:id', (req, res) => getCategoryInfo(req, res));
+app.get('/sales/:id', (req, res) => getSalesInfo(req, res));
 
 export default app;
