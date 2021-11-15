@@ -9,14 +9,29 @@ async function getCategoryInfo(req, res) {
   }
 
   try {
-    const category = await connection.query('SELECT * FROM categories WHERE id = $1 LIMIT 60', [id]);
+    const category = await connection.query('SELECT * FROM categories WHERE id = $1', [id]);
     res.send(category.rows);
   } catch (e) {
     res.sendStatus(500);
   }
 }
 
+async function getSalesInfo(req, res) {
+  const { id } = req.params;
+  if (!Number(id)) {
+    res.sendStatus(400);
+    return;
+  }
+
+  try {
+    const sales = await connection.query('SELECT * FROM sales WHERE id = $1', [id]);
+    res.send(sales.rows);
+  } catch (e) {
+    res.sendStatus(500);
+  }
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getCategoryInfo,
+  getSalesInfo,
 };
