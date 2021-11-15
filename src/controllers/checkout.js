@@ -1,4 +1,5 @@
 import connection from '../database/database.js';
+import { checkoutValidation } from '../validations/joiValidations.js';
 
 export default async function postPayment(req, res) {
   const { authorization } = req.headers;
@@ -8,6 +9,13 @@ export default async function postPayment(req, res) {
     paymentMethod,
     deliveryFee,
   } = req.body;
+
+  if (checkoutValidation.validate(req.body).error) {
+    res.status(400).send({
+      message: checkoutValidation.validate(req.body).error.details[0].message,
+    });
+    return;
+  }
 
   try {
     const user = await connection.query('SELECT * FROM sessions WHERE token = $1;', [token]);

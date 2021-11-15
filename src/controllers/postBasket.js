@@ -15,7 +15,7 @@ export default async function postBasket(req, res) {
   const validation = basketValidation.validate(req.body);
   if (validation.error) {
     res.status(400).send({
-      message: validation.error.message,
+      message: validation.error.details[0].message,
     });
     return;
   }

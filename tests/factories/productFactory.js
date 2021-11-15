@@ -7,7 +7,6 @@ const product = {
   installments: 6,
   image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1fNP6KI6YPvNOBEVucrQqP4ZVIuJejnwEcA&usqp=CAU',
 };
-let id_product = '';
 
 async function createProduct() {
   await connection.query('INSERT INTO products (name, description, price, installments) VALUES  ($1, $2, $3, $4);', [product.name, product.description, product.price, product.installments]);
@@ -29,8 +28,6 @@ async function createProduct() {
   await connection.query("INSERT INTO sizes (name) VALUES ('G');");
   const sizes = await connection.query('SELECT * FROM sizes;');
   const idSize = sizes.rows[0].id;
-
-  id_product = idProduct;
 
   return ({
     ...product,
