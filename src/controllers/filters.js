@@ -4,7 +4,7 @@ import connection from '../database/database.js';
 async function getCategories(req, res) {
   try {
     const categories = await connection.query(`
-        SELECT * FROM categories LIMIT 60;
+        SELECT * FROM categories LIMIT 24;
     `);
     res.send([...categories.rows]);
   } catch (e) {
@@ -14,7 +14,7 @@ async function getCategories(req, res) {
 
 async function getTrends(req, res) {
   try {
-    const trends = await connection.query("SELECT * FROM categories WHERE is_trend = 't' LIMIT 6;");
+    const trends = await connection.query("SELECT * FROM categories WHERE is_trend = 't' LIMIT 24;");
 
     res.send([...trends.rows]);
   } catch (e) {
@@ -24,7 +24,7 @@ async function getTrends(req, res) {
 
 async function getSales(req, res) {
   try {
-    const sales = await connection.query('SELECT * FROM sales LIMIT 16;');
+    const sales = await connection.query('SELECT * FROM sales LIMIT 24;');
     res.send(sales.rows);
   } catch (e) {
     res.sendStatus(500);
