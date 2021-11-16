@@ -68,6 +68,8 @@ async function updateQuantity(req, res) {
   const token = authorization?.replace('Bearer ', '');
   const {
     productId,
+    colorId,
+    sizeId,
     quantity,
   } = req.body;
 
@@ -83,7 +85,7 @@ async function updateQuantity(req, res) {
     }
 
     await connection.query(`UPDATE basket_products SET quantity = $1
-      WHERE product_id = $2`, [quantity, productId]);
+      WHERE product_id = $2 AND color_id = $3 AND size_id = $4`, [quantity, productId, colorId, sizeId]);
     res.sendStatus(200);
   } catch (error) {
     res.sendStatus(500);
@@ -96,6 +98,8 @@ async function deleteQuantity(req, res) {
 
   const {
     productId,
+    colorId,
+    sizeId,
   } = req.body;
 
   try {
@@ -109,13 +113,13 @@ async function deleteQuantity(req, res) {
       return;
     }
 
-    const products = await connection.query('SELECT * FROM basket_products WHERE product_id = $1', [productId]);
+    const products = await connection.query('SELECT * FROM basket_products WHERE product_id = $1 AND color_id = $2 AND size_id = $3', [productId, colorId, sizeId]);
     if (!products.rowCount) {
       res.sendStatus(404);
       return;
     }
 
-    await connection.query('DELETE FROM basket_products WHERE product_id = $1', [productId]);
+    await connection.query('DELETE FROM basket_products WHERE product_id = $1 AND color_id = $2 AND size_id = $3', [productId, colorId, sizeId]);
     res.sendStatus(200);
   } catch (error) {
     res.sendStatus(500);
