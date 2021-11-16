@@ -33,11 +33,11 @@ export default async function postBasket(req, res) {
       return;
     }
 
-    const basket = await connection.query('SELECT * FROM basket_products WHERE product_id = $1;', [productId]);
+    const basket = await connection.query('SELECT * FROM basket_products WHERE product_id = $1 AND color_id = $2 AND size_id = $3;', [productId, colorId, sizeId]);
 
     if (basket.rowCount !== 0) {
       const newQuantity = (basket.rows[0].quantity) + 1;
-      await connection.query('UPDATE basket_products SET quantity = $1 WHERE product_id = $2;', [quantity || newQuantity, productId]);
+      await connection.query('UPDATE basket_products SET quantity = $1 WHERE product_id = $2 AND color_id = $3 AND size_id = $4;', [quantity || newQuantity, productId, colorId, sizeId]);
       res.sendStatus(200);
       return;
     }
