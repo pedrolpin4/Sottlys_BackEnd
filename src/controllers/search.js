@@ -6,11 +6,11 @@ export default async function getSearchedItems(req, res) {
     content,
   } = req.query;
 
-  const substring = `%${content}%`;
+  const substring = `%${content.toLowerCase()}%`;
 
   try {
     if (type === 'produtos') {
-      const result = await connection.query('SELECT * FROM products WHERE name LIKE $1 ORDER BY name', [substring]);
+      const result = await connection.query('SELECT * FROM products WHERE LOWER(name) LIKE $1 ORDER BY name', [substring]);
       if (!result.rowCount) {
         res.sendStatus(204);
         return;
@@ -21,7 +21,7 @@ export default async function getSearchedItems(req, res) {
     }
 
     if (type === 'categorias') {
-      const result = await connection.query('SELECT * FROM categories WHERE name LIKE $1 ORDER BY name', [substring]);
+      const result = await connection.query('SELECT * FROM categories WHERE LOWER(name) LIKE $1 ORDER BY name', [substring]);
       if (!result.rowCount) {
         res.sendStatus(204);
         return;
@@ -32,7 +32,7 @@ export default async function getSearchedItems(req, res) {
     }
 
     if (type === 'tendencias') {
-      const result = await connection.query("SELECT * FROM categories WHERE name LIKE $1 AND is_trend = 't' ORDER BY name", [substring]);
+      const result = await connection.query("SELECT * FROM categories WHERE LOWER(name) LIKE $1 AND is_trend = 't' ORDER BY name", [substring]);
       if (!result.rowCount) {
         res.sendStatus(204);
         return;
@@ -43,7 +43,7 @@ export default async function getSearchedItems(req, res) {
     }
 
     if (type === 'promocoes') {
-      const result = await connection.query('SELECT * FROM sales WHERE name LIKE $1 ORDER BY name', [substring]);
+      const result = await connection.query('SELECT * FROM sales WHERE LOWER(name) LIKE $1 ORDER BY name', [substring]);
       if (!result.rowCount) {
         res.sendStatus(204);
         return;
